@@ -1,0 +1,26 @@
+[package]
+name = "example"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "Exemplary template for Rust projects"
+
+[dependencies]
+clap = { workspace = true }
+serde = { workspace = true }
+studiole-di = { workspace = true }
+studiole-logging = { workspace = true }
+studiole-report = { workspace = true }
+strum = { workspace = true }
+thiserror = { workspace = true }
+tracing = { workspace = true }
+strum_macros = "0.28.0"
+
+[dev-dependencies]
+insta = { workspace = true }
+mockall = { workspace = true }
+
+[lints]
+workspace = true
