@@ -57,6 +57,6 @@ mod tests {
         // Assert
         let status = result.expect("should be able to get status");
         assert_eq!(status, Status::Active);
-        assert_yaml_snapshot!(status)
+        assert_yaml_snapshot!(status);
     }
 }
