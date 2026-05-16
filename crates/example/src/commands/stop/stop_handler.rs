@@ -46,7 +46,7 @@ mod tests {
         let services = ServiceBuilder::new()
             .with_mock_services(|_| Ok(Status::Active))
             .build();
-        let handler = services.get::<StopHandler>().expect("should resolve");
+        let handler = services.expect::<StopHandler>();
         let request = StopRequest::mock();
         // Act
         let output = handler.execute(request);

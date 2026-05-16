@@ -46,7 +46,10 @@ fn create_logger(services: &ServiceProvider) -> Result<Logger, Report<ResolveErr
 }
 
 #[cfg(test)]
-#[expect(clippy::unnecessary_wraps, reason = "signature required by with_logging")]
+#[expect(
+    clippy::unnecessary_wraps,
+    reason = "signature required by with_logging"
+)]
 fn create_logger(_services: &ServiceProvider) -> Result<Logger, Report<ResolveError>> {
     let logger = LoggerBuilder::new().with_level(LogLevel::Trace).build();
     Ok(logger)

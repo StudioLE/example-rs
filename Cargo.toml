@@ -9,15 +9,15 @@ version = "0.0.0"
 authors = ["Laurence Elsdon <le@studiole.uk>"]
 edition = "2024"
 license = "AGPL-3.0-only"
-repository = "https://github.com/StudioLE/Example"
+repository = "https://github.com/StudioLE/example-rs"
 
 [workspace.dependencies]
 clap = { version = "4.6.1", features = ["derive"] }
 insta = { version = "1.47.2", features = ["yaml"] }
 mockall = { version = "0.14.0" }
 serde = { version = "1.0.228", features = ["derive"] }
-studiole-di = { version = "0.5.1", features = ["traits"] }
-studiole-logging = { version = "0.1.0" }
+studiole-di = { version = "0.6.0", features = ["traits"] }
+studiole-logging = { version = "0.4.0" }
 studiole-report = { version = "0.4.0", features = ["render"] }
 strum = { version = "0.28.0", features = ["derive"] }
 thiserror = { version = "2.0.18" }
