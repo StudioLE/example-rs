@@ -14,13 +14,13 @@ pub enum Subcommand {
 
 /// Dispatch the selected [`Subcommand`] to its handler.
 #[derive(FromServices)]
-pub struct SubCommandHandler {
+pub struct SubcommandHandler {
     cli: Arc<CliArgs>,
     start: Arc<StartHandler>,
     stop: Arc<StopHandler>,
 }
 
-impl SubCommandHandler {
+impl SubcommandHandler {
     /// Execute the selected subcommand.
     pub fn run(&self) -> Result<(), StructuredError> {
         let command = self.cli.command.clone();

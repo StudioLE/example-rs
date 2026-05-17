@@ -19,7 +19,7 @@ impl ServiceBuilderExt for ServiceBuilder {
             .with_type::<CliArgs>()
             .with_type::<StartHandler>()
             .with_type::<StopHandler>()
-            .with_type::<SubCommandHandler>()
+            .with_type::<SubcommandHandler>()
     }
 
     #[cfg(test)]
