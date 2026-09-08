@@ -17,8 +17,8 @@ insta = { version = "1.47.2", features = ["yaml"] }
 mockall = { version = "0.14.0" }
 serde = { version = "1.0.228", features = ["derive"] }
 studiole-di = { version = "0.6.0", features = ["traits"] }
-studiole-logging = { version = "0.4.0" }
-studiole-report = { version = "0.4.0", features = ["render"] }
+studiole-logging = { version = "0.4.1" }
+studiole-report = { version = "0.4.1", features = ["render"] }
 strum = { version = "0.28.0", features = ["derive"] }
 thiserror = { version = "2.0.18" }
 tracing = { version = "0.1.44" }
