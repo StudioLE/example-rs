@@ -1,8 +1,7 @@
 ---
-name: Feature Request (Markdown)
-about: Propose a new feature
-title: 'feat: '
-labels: 12-feat
+name: Issue (Markdown)
+about: 'Request a feature or report a bug. Titles should be prefixed with `feat:` or `fix:`'
+labels: 03-could
 ---
 
 ## Problem

@@ -1,8 +1,7 @@
-name: Feature Request (Form)
-description: Propose a new feature
-title: 'feat: '
+name: Issue (Form)
+description: 'Request a feature or report a bug. Titles should be prefixed with `feat:` or `fix:`'
 labels:
-- 12-feat
+- 03-could
 body:
 - type: textarea
   id: problem
