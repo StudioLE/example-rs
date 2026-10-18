@@ -1,10 +1,10 @@
 //! Subcommand variants and dispatch handler.
 
 use crate::prelude::*;
-use clap::Subcommand as ClapSubcommand;
+use usage_rs::Subcommands as UsageSubcommands;
 
 /// Available CLI subcommands.
-#[derive(Clone, ClapSubcommand)]
+#[derive(Clone, Debug, Eq, PartialEq, UsageSubcommands)]
 pub enum Subcommand {
     /// Start the application.
     Start(StartRequest),
@@ -13,6 +13,11 @@ pub enum Subcommand {
 }
 
 /// Dispatch the selected [`Subcommand`] to its handler.
+///
+/// - Matches by hand because [`StartHandler::execute`] and [`StopHandler::execute`] return
+///   different error types
+/// - `usage` generates the match from `#[usage(run_with)]` when every command shares one `Output`
+///   type: <https://usage.jdx.dev/rust/dispatch>
 #[derive(FromServices)]
 pub struct SubcommandHandler {
     cli: Arc<CliArgs>,

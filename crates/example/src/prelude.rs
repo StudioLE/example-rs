@@ -6,7 +6,6 @@ pub(crate) use crate::app::*;
 pub(crate) use crate::commands::*;
 pub(crate) use crate::services::*;
 
-pub(crate) use clap::Args;
 pub(crate) use serde::{Deserialize, Serialize};
 pub(crate) use std::collections::{BTreeMap, HashMap, HashSet, VecDeque};
 pub(crate) use std::convert::Infallible;
@@ -22,6 +21,7 @@ pub(crate) use studiole_logging::prelude::*;
 pub(crate) use studiole_report::prelude::*;
 pub(crate) use thiserror::Error;
 pub(crate) use tracing::{debug, error, info, trace, warn};
+pub(crate) use usage_rs::Args;
 
 #[cfg(test)]
-pub(crate) use insta::assert_yaml_snapshot;
+pub(crate) use insta::{assert_snapshot, assert_yaml_snapshot};

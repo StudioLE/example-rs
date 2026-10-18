@@ -1,0 +1,13 @@
+---
+source: crates/example/src/app/cli_args.rs
+expression: output
+---
+Start the application.
+
+Usage: example start <ID>
+
+Arguments:
+  <ID>  Identifier of the resource to start.
+
+Flags:
+  -h, --help  Print help

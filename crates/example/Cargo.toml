@@ -8,7 +8,6 @@ repository.workspace = true
 description = "Exemplary template for Rust projects"
 
 [dependencies]
-clap = { workspace = true }
 serde = { workspace = true }
 studiole-di = { workspace = true }
 studiole-logging = { workspace = true }
@@ -16,10 +15,12 @@ studiole-report = { workspace = true }
 strum = { workspace = true }
 thiserror = { workspace = true }
 tracing = { workspace = true }
+usage-rs = { workspace = true }
 
 [dev-dependencies]
 insta = { workspace = true }
 mockall = { workspace = true }
+usage-rs = { workspace = true, features = ["test"] }
 
 [lints]
 workspace = true

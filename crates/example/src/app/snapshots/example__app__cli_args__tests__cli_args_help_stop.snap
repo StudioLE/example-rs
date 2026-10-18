@@ -1,0 +1,13 @@
+---
+source: crates/example/src/app/cli_args.rs
+expression: output
+---
+Stop the application.
+
+Usage: example stop <ID>
+
+Arguments:
+  <ID>  Identifier of the resource to stop.
+
+Flags:
+  -h, --help  Print help

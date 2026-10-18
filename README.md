@@ -6,7 +6,7 @@ Exemplary template for Rust CLI projects.
 
 - `studiole-di` service container
 - `studiole-report` error rendering
-- `clap` CLI parsing
+- `usage-rs` CLI parsing
 
 ## Install
 
@@ -31,9 +31,12 @@ Cargo workspace with single crate:
 - Rust nightly, edition 2024
 - `studiole-di` for dependency injection (local path: `../studiole-di`)
 - `studiole-report` for structured error rendering
-- `clap` (derive) for CLI parsing
+- `usage-rs` (derive) for CLI parsing
 - `thiserror` for error enums
 - `mockall` + `insta` for testing
+
+> [!NOTE]
+> The template switched from `clap` to `usage-rs`. The last `clap` version is [`345be5a`](https://github.com/StudioLE/example-rs/tree/345be5a89ef4f2cd641082fc3d7570f596e36084).
 
 ## CI/CD
 
