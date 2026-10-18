@@ -21,7 +21,6 @@ impl Cli {
     }
 
     /// Run the CLI to completion, returning the appropriate exit code.
-    #[must_use]
     pub fn run(&self) -> ExitCode {
         if let Err(e) = self.run_subcommand() {
             error!("{}", e.render());
