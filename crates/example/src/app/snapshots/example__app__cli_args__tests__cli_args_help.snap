@@ -2,7 +2,7 @@
 source: crates/example/src/app/cli_args.rs
 expression: output
 ---
-example 0.0.0
+example x.y.z
 Exemplary template for Rust projects
 
 Usage: example [--log-level <LOG_LEVEL>] <SUBCOMMAND>

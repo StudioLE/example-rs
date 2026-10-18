@@ -82,10 +82,12 @@ mod tests {
     }
 
     /// The root help page.
+    ///
+    /// - Replaces the version with a placeholder, as CI sets it at build time
     #[test]
     fn cli_args_help() {
         let spec = CliArgs::spec();
-        let output = help(spec, &[], Page::Long);
+        let output = help(spec, &[], Page::Long).replace(env!("CARGO_PKG_VERSION"), "x.y.z");
         assert_snapshot!(output);
     }
 
