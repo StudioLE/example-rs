@@ -5,12 +5,7 @@ use usage_rs::Cli as UsageCli;
 
 /// Parsed CLI arguments.
 #[derive(Debug, UsageCli)]
-#[usage(
-    bin = "example",
-    about = "Exemplary template for Rust projects",
-    version,
-    unknown_flags = "error"
-)]
+#[usage(bin = "example", about, version, unknown_flags = "error")]
 pub struct CliArgs {
     /// Set the log level.
     #[usage(long, value_enum)]
