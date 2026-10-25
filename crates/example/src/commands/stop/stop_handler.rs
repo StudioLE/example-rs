@@ -45,9 +45,9 @@ mod tests {
         // Arrange
         let services = ServiceBuilder::new()
             .with_test_services()
-            .with_instance::<Arc<dyn StatusProvider>>(Arc::new(StatusProviderStub {
-                status: Status::Active,
-            }))
+            .with_instance(StatusProviderStub {
+                status: Ok(Status::Active),
+            })
             .build();
         let handler = services.expect::<StopHandler>();
         let request = StopRequest::fixture();
@@ -55,5 +55,19 @@ mod tests {
         let output = handler.execute(request);
         // Assert
         assert!(output.is_ok());
+    }
+
+    /// [`StopHandler::execute`] with an inactive status.
+    #[test]
+    fn stop_handler_execute_inactive() {
+        // Arrange
+        let services = ServiceBuilder::new().with_test_services().build();
+        let handler = services.expect::<StopHandler>();
+        let request = StopRequest::fixture();
+        // Act
+        let output = handler.execute(request);
+        // Assert
+        let report = output.expect_err("should not be able to stop when inactive");
+        assert_eq!(report.current_context(), &StopError::AlreadyInactive);
     }
 }

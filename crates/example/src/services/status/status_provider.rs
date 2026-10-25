@@ -18,11 +18,11 @@ impl StatusProvider for StatusProviderAdapter {
     }
 }
 
-/// [`StatusProvider`] returning a fixed [`Status`].
+/// [`StatusProvider`] returning a fixed [`Status`] or [`StatusError`].
 #[cfg(test)]
 pub struct StatusProviderStub {
-    /// Status returned by [`StatusProvider::get`].
-    pub status: Status,
+    /// Value returned by [`StatusProvider::get`].
+    pub status: Result<Status, StatusError>,
 }
 
 #[cfg(test)]
@@ -31,7 +31,7 @@ impl FromServices for StatusProviderStub {
 
     fn from_services(_services: &ServiceProvider) -> Result<Self, Report<Self::Error>> {
         Ok(Self {
-            status: Status::fixture(),
+            status: Ok(Status::fixture()),
         })
     }
 }
@@ -39,6 +39,48 @@ impl FromServices for StatusProviderStub {
 #[cfg(test)]
 impl StatusProvider for StatusProviderStub {
     fn get(&self, _id: &Id) -> Result<Status, Report<StatusError>> {
+        self.status.map_err(Report::new)
+    }
+}
+
+/// [`StatusProvider`] returning a fixed [`Status`] and recording each [`Id`] it receives.
+#[cfg(test)]
+pub struct StatusProviderSpy {
+    /// Status returned by [`StatusProvider::get`].
+    pub status: Status,
+    calls: Mutex<Vec<Id>>,
+}
+
+#[cfg(test)]
+impl StatusProviderSpy {
+    /// Each [`Id`] received by [`StatusProvider::get`], in call order.
+    pub fn calls(&self) -> Vec<Id> {
+        self.calls
+            .lock()
+            .expect("should be able to lock calls")
+            .clone()
+    }
+}
+
+#[cfg(test)]
+impl FromServices for StatusProviderSpy {
+    type Error = Infallible;
+
+    fn from_services(_services: &ServiceProvider) -> Result<Self, Report<Self::Error>> {
+        Ok(Self {
+            status: Status::fixture(),
+            calls: Mutex::default(),
+        })
+    }
+}
+
+#[cfg(test)]
+impl StatusProvider for StatusProviderSpy {
+    fn get(&self, id: &Id) -> Result<Status, Report<StatusError>> {
+        self.calls
+            .lock()
+            .expect("should be able to lock calls")
+            .push(id.clone());
         Ok(self.status)
     }
 }
@@ -47,7 +89,7 @@ impl StatusProvider for StatusProviderStub {
 #[derive(Clone, Copy, Debug, Eq, Error, PartialEq)]
 pub enum StatusError {
     /// Unable to read status.
-    #[expect(dead_code, reason = "example")]
+    #[cfg_attr(not(test), expect(dead_code, reason = "example"))]
     #[error("Failed to read status")]
     Read,
 }
