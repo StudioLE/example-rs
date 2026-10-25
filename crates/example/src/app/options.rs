@@ -8,7 +8,6 @@ pub struct Options {
     /// Directory holding one status file per [`Id`].
     ///
     /// Default: the platform state dir, e.g. `~/.local/state/example`
-    #[cfg_attr(not(test), expect(dead_code, reason = "example"))]
     pub state_dir: PathBuf,
 }
 

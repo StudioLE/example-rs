@@ -15,7 +15,9 @@ pub trait ServiceBuilderExt {
 impl ServiceBuilderExt for ServiceBuilder {
     fn with_app_services(self) -> Self {
         self.with_logging(create_logger)
-            .with_trait::<dyn StatusProvider, StatusProviderAdapter>()
+            .with_trait::<dyn StatusProvider, StatusFileAdapter>()
+            .with_trait::<dyn StatusWriter, StatusFileAdapter>()
+            .with_init::<StatusFileAdapter>()
             .with_type::<CliArgs>()
             .with_type::<Options>()
             .with_type::<StartHandler>()
@@ -26,7 +28,9 @@ impl ServiceBuilderExt for ServiceBuilder {
     #[cfg(test)]
     fn with_test_services(self) -> Self {
         self.with_app_services()
-            .with_trait::<dyn StatusProvider, StatusProviderStub>()
+            .with_trait::<dyn StatusProvider, StatusFake>()
+            .with_trait::<dyn StatusWriter, StatusFake>()
+            .with_instance(CliArgs::fixture())
     }
 }
 

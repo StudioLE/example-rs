@@ -5,12 +5,11 @@ use crate::prelude::*;
 /// Identifier safe to use as a file name.
 ///
 /// - Contains only ASCII letters, digits, `-`, and `_`
-#[derive(Clone, Debug, Eq, PartialEq)]
+#[derive(Clone, Debug, Eq, Hash, PartialEq)]
 pub struct Id(String);
 
 impl Id {
     /// The inner string slice.
-    #[cfg_attr(not(test), expect(dead_code, reason = "example"))]
     pub fn as_str(&self) -> &str {
         &self.0
     }

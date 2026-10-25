@@ -19,6 +19,7 @@ studiole-di = { version = "0.6.0", features = ["traits"] }
 studiole-logging = { version = "0.5.0", features = ["usage"] }
 studiole-report = { version = "0.4.1", features = ["render"] }
 strum = { version = "0.28.0", features = ["derive"] }
+tempfile = { version = "3.27.0" }
 thiserror = { version = "2.0.21" }
 tracing = { version = "0.1.44" }
 usage-rs = { version = "7.0.2" }

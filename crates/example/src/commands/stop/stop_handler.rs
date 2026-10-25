@@ -5,7 +5,8 @@ use crate::prelude::*;
 /// Execute the stop subcommand.
 #[derive(FromServices)]
 pub struct StopHandler {
-    status: Arc<dyn StatusProvider>,
+    status_provider: Arc<dyn StatusProvider>,
+    status_writer: Arc<dyn StatusWriter>,
 }
 
 impl StopHandler {
@@ -13,12 +14,15 @@ impl StopHandler {
     pub fn execute(&self, request: StopRequest) -> Result<(), Report<StopError>> {
         trace!(?request, "Stopping");
         let status = self
-            .status
+            .status_provider
             .get(&request.id)
             .change_context(StopError::GetStatus)?;
         if status == Status::Inactive {
             return Err(Report::new(StopError::AlreadyInactive).attach("id", request.id));
         }
+        self.status_writer
+            .set(&request.id, Status::Inactive)
+            .change_context(StopError::SetStatus)?;
         info!(id = %request.id, "Stopped");
         Ok(())
     }
@@ -30,6 +34,9 @@ pub enum StopError {
     /// Unable to get status.
     #[error("Unable to get status")]
     GetStatus,
+    /// Unable to set status.
+    #[error("Unable to set status")]
+    SetStatus,
     /// Already inactive.
     #[error("Already inactive")]
     AlreadyInactive,
@@ -45,9 +52,7 @@ mod tests {
         // Arrange
         let services = ServiceBuilder::new()
             .with_test_services()
-            .with_instance(StatusProviderStub {
-                status: Ok(Status::Active),
-            })
+            .with_instance(StatusFake::fixture_active())
             .build();
         let handler = services.expect::<StopHandler>();
         let request = StopRequest::fixture();
@@ -55,6 +60,8 @@ mod tests {
         let output = handler.execute(request);
         // Assert
         assert!(output.is_ok());
+        let fake = services.expect::<StatusFake>();
+        assert_eq!(fake.get(&Id::fixture()).ok(), Some(Status::Inactive));
     }
 
     /// [`StopHandler::execute`] with an inactive status.

@@ -15,7 +15,7 @@ pub(crate) use std::io::{self, Read, Write};
 pub(crate) use std::path::{Path, PathBuf};
 pub(crate) use std::str::FromStr;
 pub(crate) use std::sync::{Arc, Mutex};
-pub(crate) use strum::Display;
+pub(crate) use strum::{Display, EnumString};
 pub(crate) use studiole_di::prelude::*;
 pub(crate) use studiole_logging::prelude::*;
 pub(crate) use studiole_report::prelude::*;
