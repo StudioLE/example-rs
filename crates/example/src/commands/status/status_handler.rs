@@ -6,6 +6,7 @@ use crate::prelude::*;
 #[derive(FromServices)]
 pub struct StatusHandler {
     console: Arc<dyn WriteLine>,
+    renderer: Arc<OutputRenderer>,
     status: Arc<dyn StatusProvider>,
 }
 
@@ -24,8 +25,12 @@ impl StatusHandler {
             id: request.id,
             status,
         };
+        let rendered = self
+            .renderer
+            .render(&output)
+            .change_context(StatusHandlerError::Render)?;
         self.console
-            .write_line(&output.to_string())
+            .write_line(&rendered)
             .change_context(StatusHandlerError::Write)?;
         Ok(output)
     }
@@ -37,6 +42,9 @@ pub enum StatusHandlerError {
     /// Unable to get status.
     #[error("Unable to get status")]
     GetStatus,
+    /// Unable to render the output.
+    #[error("Unable to render output")]
+    Render,
     /// Unable to write the output.
     #[error("Unable to write output")]
     Write,

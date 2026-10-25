@@ -21,6 +21,7 @@ impl ServiceBuilderExt for ServiceBuilder {
             .with_init::<StatusFileAdapter>()
             .with_type::<CliArgs>()
             .with_type::<Options>()
+            .with_type::<OutputRenderer>()
             .with_type::<StartHandler>()
             .with_type::<StatusHandler>()
             .with_type::<StopHandler>()

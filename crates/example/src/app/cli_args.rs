@@ -1,12 +1,31 @@
 //! Parsed CLI arguments registered in the service container.
+//!
+//! - Declares each stdout format with `output(…)` so `--format` can select one
+//! - Declares outputs on the root, as `select` must sit with its flag and every subcommand
+//!   inherits them
+//! - Carries `media_type` and `framing` into the usage spec for generated docs, SDKs, and
+//!   `usage mcp`, with no effect at runtime
+//! - Keeps these notes off [`CliArgs`], as usage renders its doc comment as long help
 
 use crate::prelude::*;
 use usage_rs::Cli as UsageCli;
 
 /// Parsed CLI arguments.
 #[derive(Debug, UsageCli)]
-#[usage(bin = "example", about, version, unknown_flags = "error")]
+#[usage(
+    bin = "example",
+    about,
+    version,
+    unknown_flags = "error",
+    output("human", default, help = "Human-readable text"),
+    output("json", media_type = "application/json", framing = "json"),
+    output("toml", media_type = "application/toml"),
+    output("yaml", media_type = "application/yaml")
+)]
 pub struct CliArgs {
+    /// Format to print output in.
+    #[usage(long, global, env = "EXAMPLE_FORMAT", value_enum, select)]
+    pub format: Option<OutputFormat>,
     /// Set the log level.
     #[usage(long, global, env = "EXAMPLE_LOG_LEVEL", value_enum)]
     pub log_level: Option<LogLevel>,
@@ -23,6 +42,7 @@ impl CliArgs {
     #[cfg(test)]
     pub fn fixture() -> Self {
         Self {
+            format: None,
             log_level: None,
             state_dir: None,
             command: Subcommand::Start(StartRequest::fixture()),
@@ -76,6 +96,19 @@ mod tests {
         let cli = parse(spec, &words, CliArgs::parse_from).expect("the command line should parse");
         // Assert
         assert_eq!(cli.state_dir, Some(PathBuf::from("/var/tmp/example")));
+    }
+
+    /// [`CliArgs::parse_from`] binds the global `--format` after a subcommand.
+    #[test]
+    fn cli_args_parse_from_format() {
+        // Arrange
+        let input = argv(["start", "abc", "--format", "json"]);
+        let words = input.words();
+        let spec = CliArgs::spec();
+        // Act
+        let cli = parse(spec, &words, CliArgs::parse_from).expect("the command line should parse");
+        // Assert
+        assert_eq!(cli.format, Some(OutputFormat::Json));
     }
 
     /// [`CliArgs::parse_from`] rejects an [`Id`] that isn't safe as a file name.

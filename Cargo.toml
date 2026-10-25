@@ -15,12 +15,15 @@ repository = "https://github.com/StudioLE/example-rs"
 etcetera = { version = "0.11.0" }
 insta = { version = "1.49.0", features = ["yaml"] }
 serde = { version = "1.0.229", features = ["derive"] }
+serde_json = { version = "1.0.154" }
+serde_yaml = { version = "0.9.34" }
 studiole-di = { version = "0.6.0", features = ["traits"] }
 studiole-logging = { version = "0.5.0", features = ["usage"] }
 studiole-report = { version = "0.4.1", features = ["render"] }
 strum = { version = "0.28.0", features = ["derive"] }
 tempfile = { version = "3.27.0" }
 thiserror = { version = "2.0.21" }
+toml = { version = "1.1.8" }
 tracing = { version = "0.1.44" }
 usage-rs = { version = "7.0.2" }
 

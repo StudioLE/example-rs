@@ -3,7 +3,7 @@
 use crate::prelude::*;
 
 /// Current status of one [`Id`].
-#[derive(Clone, Debug, Eq, PartialEq)]
+#[derive(Clone, Debug, Eq, PartialEq, Serialize)]
 pub struct StatusOutput {
     /// Identifier that was queried.
     pub id: Id,

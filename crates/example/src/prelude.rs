@@ -21,7 +21,7 @@ pub(crate) use studiole_logging::prelude::*;
 pub(crate) use studiole_report::prelude::*;
 pub(crate) use thiserror::Error;
 pub(crate) use tracing::{debug, error, info, trace, warn};
-pub(crate) use usage_rs::Args;
+pub(crate) use usage_rs::{Args, ValueEnum};
 
 #[cfg(test)]
 pub(crate) use insta::{assert_snapshot, assert_yaml_snapshot};

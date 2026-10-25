@@ -1,0 +1,5 @@
+---
+source: crates/example/src/services/output/output_renderer.rs
+expression: "output.expect(\"should be able to render\")"
+---
+fixture: Inactive

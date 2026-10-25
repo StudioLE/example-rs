@@ -10,11 +10,14 @@ description = "Exemplary template for Rust projects"
 [dependencies]
 etcetera = { workspace = true }
 serde = { workspace = true }
+serde_json = { workspace = true }
+serde_yaml = { workspace = true }
 studiole-di = { workspace = true }
 studiole-logging = { workspace = true }
 studiole-report = { workspace = true }
 strum = { workspace = true }
 thiserror = { workspace = true }
+toml = { workspace = true }
 tracing = { workspace = true }
 usage-rs = { workspace = true }
 

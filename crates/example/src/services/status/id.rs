@@ -5,7 +5,7 @@ use crate::prelude::*;
 /// Identifier safe to use as a file name.
 ///
 /// - Contains only ASCII letters, digits, `-`, and `_`
-#[derive(Clone, Debug, Eq, Hash, PartialEq)]
+#[derive(Clone, Debug, Eq, Hash, PartialEq, Serialize)]
 pub struct Id(String);
 
 impl Id {
