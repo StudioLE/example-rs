@@ -69,7 +69,7 @@ mod tests {
     #[test]
     fn cli_args_parse_from_state_dir() {
         // Arrange
-        let input = argv(["start", "abc", "--state-dir", "/var/tmp/example"]);
+        let input = argv(["status", "abc", "--state-dir", "/var/tmp/example"]);
         let words = input.words();
         let spec = CliArgs::spec();
         // Act
@@ -135,6 +135,14 @@ mod tests {
     fn cli_args_help_start() {
         let spec = CliArgs::spec();
         let output = help(spec, &["start"], Page::Long);
+        assert_snapshot!(output);
+    }
+
+    /// The help page for the status subcommand.
+    #[test]
+    fn cli_args_help_status() {
+        let spec = CliArgs::spec();
+        let output = help(spec, &["status"], Page::Long);
         assert_snapshot!(output);
     }
 

@@ -8,9 +8,10 @@ Exemplary template for Rust projects
 Usage: example [--log-level <LOG_LEVEL>] [--state-dir <STATE_DIR>] <SUBCOMMAND>
 
 Commands:
-  start  Start the application.
-  stop   Stop the application.
-  help   Print this message or the help of the given subcommand(s)
+  start   Start the application.
+  status  Print the application status.
+  stop    Stop the application.
+  help    Print this message or the help of the given subcommand(s)
 
 Flags:
       --log-level <LOG_LEVEL>  Set the log level.

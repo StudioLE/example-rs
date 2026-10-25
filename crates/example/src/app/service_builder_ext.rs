@@ -15,12 +15,14 @@ pub trait ServiceBuilderExt {
 impl ServiceBuilderExt for ServiceBuilder {
     fn with_app_services(self) -> Self {
         self.with_logging(create_logger)
+            .with_trait::<dyn WriteLine, ConsoleWriter>()
             .with_trait::<dyn StatusProvider, StatusFileAdapter>()
             .with_trait::<dyn StatusWriter, StatusFileAdapter>()
             .with_init::<StatusFileAdapter>()
             .with_type::<CliArgs>()
             .with_type::<Options>()
             .with_type::<StartHandler>()
+            .with_type::<StatusHandler>()
             .with_type::<StopHandler>()
             .with_type::<SubcommandHandler>()
     }
@@ -28,6 +30,7 @@ impl ServiceBuilderExt for ServiceBuilder {
     #[cfg(test)]
     fn with_test_services(self) -> Self {
         self.with_app_services()
+            .with_trait::<dyn WriteLine, WriteLineSpy>()
             .with_trait::<dyn StatusProvider, StatusFake>()
             .with_trait::<dyn StatusWriter, StatusFake>()
             .with_instance(CliArgs::fixture())

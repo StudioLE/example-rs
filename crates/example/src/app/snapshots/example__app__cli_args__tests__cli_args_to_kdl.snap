@@ -29,6 +29,10 @@ cmd start help="Start the application." {
     flag "-h --help" help="Print help" action=help builtin=#true
     arg <ID> help="Identifier of the resource to start."
 }
+cmd status help="Print the application status." {
+    flag "-h --help" help="Print help" action=help builtin=#true
+    arg <ID> help="Identifier of the resource to query."
+}
 cmd stop help="Stop the application." {
     flag "-h --help" help="Print help" action=help builtin=#true
     arg <ID> help="Identifier of the resource to stop."
