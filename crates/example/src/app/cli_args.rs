@@ -44,8 +44,24 @@ mod tests {
         assert_eq!(cli.log_level, Some(LogLevel::Debug));
         assert_eq!(
             cli.command,
-            Subcommand::Start(StartRequest::new(Id::new("abc")))
+            Subcommand::Start(StartRequest::new(
+                Id::from_str("abc").expect("should be able to parse id")
+            ))
         );
+    }
+
+    /// [`CliArgs::parse_from`] rejects an [`Id`] that isn't safe as a file name.
+    #[test]
+    fn cli_args_parse_from_invalid_id() {
+        // Arrange
+        let input = argv(["start", "../etc"]);
+        let words = input.words();
+        let spec = CliArgs::spec();
+        // Act
+        let message =
+            parse(spec, &words, CliArgs::parse_from).expect_err("`../etc` is not a valid id");
+        // Assert
+        assert!(message.contains("Id must only contain"), "{message}");
     }
 
     /// [`CliArgs::parse_from`] rejects a log level outside the declared choices.
