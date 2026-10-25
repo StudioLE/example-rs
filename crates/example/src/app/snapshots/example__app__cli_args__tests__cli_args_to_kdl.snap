@@ -8,7 +8,7 @@ version "x.y.z"
 about "Exemplary template for Rust projects"
 unknown_flags error
 subcommand_required #true
-flag --log-level help="Set the log level." {
+flag --log-level help="Set the log level." global=#true env=EXAMPLE_LOG_LEVEL {
     arg <LOG_LEVEL> {
         choices ignore_case=#true {
             choice error help="Errors only."

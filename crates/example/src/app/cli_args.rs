@@ -8,7 +8,7 @@ use usage_rs::Cli as UsageCli;
 #[usage(bin = "example", about, version, unknown_flags = "error")]
 pub struct CliArgs {
     /// Set the log level.
-    #[usage(long, value_enum)]
+    #[usage(long, global, env = "EXAMPLE_LOG_LEVEL", value_enum)]
     pub log_level: Option<LogLevel>,
     /// Subcommand to execute.
     #[usage(subcommand)]
