@@ -1,11 +1,11 @@
-//! Output of the status subcommand.
+//! Output of the start, status, and stop subcommands.
 
 use crate::prelude::*;
 
 /// Current status of one [`Id`].
 #[derive(Clone, Debug, Eq, PartialEq, Serialize)]
 pub struct StatusOutput {
-    /// Identifier that was queried.
+    /// Identifier of the resource.
     pub id: Id,
     /// Current status.
     pub status: Status,

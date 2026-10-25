@@ -32,13 +32,11 @@ impl SubcommandHandler {
     pub fn run(&self) -> Result<(), StructuredError> {
         let command = self.cli.command.clone();
         match command {
-            Subcommand::Start(req) => Ok(self.start.execute(req)?),
-            Subcommand::Status(req) => {
-                self.status.execute(req)?;
-                Ok(())
-            }
-            Subcommand::Stop(req) => Ok(self.stop.execute(req)?),
-        }
+            Subcommand::Start(req) => self.start.execute(req)?,
+            Subcommand::Status(req) => self.status.execute(req)?,
+            Subcommand::Stop(req) => self.stop.execute(req)?,
+        };
+        Ok(())
     }
 }
 

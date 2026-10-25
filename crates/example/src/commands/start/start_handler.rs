@@ -5,13 +5,15 @@ use crate::prelude::*;
 /// Execute the start subcommand.
 #[derive(FromServices)]
 pub struct StartHandler {
+    console: Arc<dyn WriteLine>,
+    renderer: Arc<OutputRenderer>,
     status_provider: Arc<dyn StatusProvider>,
     status_writer: Arc<dyn StatusWriter>,
 }
 
 impl StartHandler {
-    /// Start the application.
-    pub fn execute(&self, request: StartRequest) -> Result<(), Report<StartError>> {
+    /// Start the application and print the new status.
+    pub fn execute(&self, request: StartRequest) -> Result<StatusOutput, Report<StartError>> {
         trace!(?request, "Starting");
         let status = self
             .status_provider
@@ -24,7 +26,18 @@ impl StartHandler {
             .set(&request.id, Status::Active)
             .change_context(StartError::SetStatus)?;
         info!(id = %request.id, "Started");
-        Ok(())
+        let output = StatusOutput {
+            id: request.id,
+            status: Status::Active,
+        };
+        let rendered = self
+            .renderer
+            .render(&output)
+            .change_context(StartError::Render)?;
+        self.console
+            .write_line(&rendered)
+            .change_context(StartError::Write)?;
+        Ok(output)
     }
 }
 
@@ -40,6 +53,12 @@ pub enum StartError {
     /// Already active.
     #[error("Already active")]
     AlreadyActive,
+    /// Unable to render the output.
+    #[error("Unable to render output")]
+    Render,
+    /// Unable to write the output.
+    #[error("Unable to write output")]
+    Write,
 }
 
 #[cfg(test)]
@@ -52,13 +71,19 @@ mod tests {
         // Arrange
         let services = ServiceBuilder::new().with_test_services().build();
         let handler = services.expect::<StartHandler>();
+        let fake = services.expect::<StatusFake>();
+        let spy = services.expect::<WriteLineSpy>();
         let request = StartRequest::fixture();
+        let expected = StatusOutput {
+            status: Status::Active,
+            ..StatusOutput::fixture()
+        };
         // Act
         let output = handler.execute(request);
         // Assert
-        assert!(output.is_ok());
-        let fake = services.expect::<StatusFake>();
+        assert_eq!(output.ok(), Some(expected));
         assert_eq!(fake.get(&Id::fixture()).ok(), Some(Status::Active));
+        assert_eq!(spy.lines(), vec![String::from("fixture: Active")]);
     }
 
     /// [`StartHandler::execute`] with an active status.

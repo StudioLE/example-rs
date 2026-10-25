@@ -5,13 +5,15 @@ use crate::prelude::*;
 /// Execute the stop subcommand.
 #[derive(FromServices)]
 pub struct StopHandler {
+    console: Arc<dyn WriteLine>,
+    renderer: Arc<OutputRenderer>,
     status_provider: Arc<dyn StatusProvider>,
     status_writer: Arc<dyn StatusWriter>,
 }
 
 impl StopHandler {
-    /// Stop the application.
-    pub fn execute(&self, request: StopRequest) -> Result<(), Report<StopError>> {
+    /// Stop the application and print the new status.
+    pub fn execute(&self, request: StopRequest) -> Result<StatusOutput, Report<StopError>> {
         trace!(?request, "Stopping");
         let status = self
             .status_provider
@@ -24,7 +26,18 @@ impl StopHandler {
             .set(&request.id, Status::Inactive)
             .change_context(StopError::SetStatus)?;
         info!(id = %request.id, "Stopped");
-        Ok(())
+        let output = StatusOutput {
+            id: request.id,
+            status: Status::Inactive,
+        };
+        let rendered = self
+            .renderer
+            .render(&output)
+            .change_context(StopError::Render)?;
+        self.console
+            .write_line(&rendered)
+            .change_context(StopError::Write)?;
+        Ok(output)
     }
 }
 
@@ -40,6 +53,12 @@ pub enum StopError {
     /// Already inactive.
     #[error("Already inactive")]
     AlreadyInactive,
+    /// Unable to render the output.
+    #[error("Unable to render output")]
+    Render,
+    /// Unable to write the output.
+    #[error("Unable to write output")]
+    Write,
 }
 
 #[cfg(test)]
@@ -55,13 +74,19 @@ mod tests {
             .with_instance(StatusFake::fixture_active())
             .build();
         let handler = services.expect::<StopHandler>();
+        let fake = services.expect::<StatusFake>();
+        let spy = services.expect::<WriteLineSpy>();
         let request = StopRequest::fixture();
+        let expected = StatusOutput {
+            status: Status::Inactive,
+            ..StatusOutput::fixture()
+        };
         // Act
         let output = handler.execute(request);
         // Assert
-        assert!(output.is_ok());
-        let fake = services.expect::<StatusFake>();
+        assert_eq!(output.ok(), Some(expected));
         assert_eq!(fake.get(&Id::fixture()).ok(), Some(Status::Inactive));
+        assert_eq!(spy.lines(), vec![String::from("fixture: Inactive")]);
     }
 
     /// [`StopHandler::execute`] with an inactive status.
