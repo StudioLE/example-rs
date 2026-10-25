@@ -17,3 +17,5 @@ Global flags:
                                [possible values: error, warn, info, debug,
                                trace]
                                [env: EXAMPLE_LOG_LEVEL]
+      --state-dir <STATE_DIR>  Directory to store status files in.
+                               [env: EXAMPLE_STATE_DIR]

@@ -10,9 +10,24 @@ pub struct CliArgs {
     /// Set the log level.
     #[usage(long, global, env = "EXAMPLE_LOG_LEVEL", value_enum)]
     pub log_level: Option<LogLevel>,
+    /// Directory to store status files in.
+    #[usage(long, global, env = "EXAMPLE_STATE_DIR", value_hint = usage_rs::ValueHint::DirPath)]
+    pub state_dir: Option<PathBuf>,
     /// Subcommand to execute.
     #[usage(subcommand)]
     pub command: Subcommand,
+}
+
+impl CliArgs {
+    /// Create a [`CliArgs`] fixture for testing.
+    #[cfg(test)]
+    pub fn fixture() -> Self {
+        Self {
+            log_level: None,
+            state_dir: None,
+            command: Subcommand::Start(StartRequest::fixture()),
+        }
+    }
 }
 
 impl FromServices for CliArgs {
@@ -48,6 +63,19 @@ mod tests {
                 Id::from_str("abc").expect("should be able to parse id")
             ))
         );
+    }
+
+    /// [`CliArgs::parse_from`] binds the global `--state-dir` after a subcommand.
+    #[test]
+    fn cli_args_parse_from_state_dir() {
+        // Arrange
+        let input = argv(["start", "abc", "--state-dir", "/var/tmp/example"]);
+        let words = input.words();
+        let spec = CliArgs::spec();
+        // Act
+        let cli = parse(spec, &words, CliArgs::parse_from).expect("the command line should parse");
+        // Assert
+        assert_eq!(cli.state_dir, Some(PathBuf::from("/var/tmp/example")));
     }
 
     /// [`CliArgs::parse_from`] rejects an [`Id`] that isn't safe as a file name.

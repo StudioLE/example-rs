@@ -19,8 +19,12 @@ flag --log-level help="Set the log level." global=#true env=EXAMPLE_LOG_LEVEL {
         }
     }
 }
+flag --state-dir help="Directory to store status files in." global=#true env=EXAMPLE_STATE_DIR {
+    arg <STATE_DIR>
+}
 flag "-h --help" help="Print help" action=help builtin=#true
 flag "-V --version" help="Print version" action=version builtin=#true
+complete state_dir type=dir
 cmd start help="Start the application." {
     flag "-h --help" help="Print help" action=help builtin=#true
     arg <ID> help="Identifier of the resource to start."

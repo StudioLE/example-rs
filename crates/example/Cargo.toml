@@ -8,6 +8,7 @@ repository.workspace = true
 description = "Exemplary template for Rust projects"
 
 [dependencies]
+etcetera = { workspace = true }
 serde = { workspace = true }
 studiole-di = { workspace = true }
 studiole-logging = { workspace = true }

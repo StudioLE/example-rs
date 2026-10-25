@@ -17,6 +17,7 @@ impl ServiceBuilderExt for ServiceBuilder {
         self.with_logging(create_logger)
             .with_trait::<dyn StatusProvider, StatusProviderAdapter>()
             .with_type::<CliArgs>()
+            .with_type::<Options>()
             .with_type::<StartHandler>()
             .with_type::<StopHandler>()
             .with_type::<SubcommandHandler>()
