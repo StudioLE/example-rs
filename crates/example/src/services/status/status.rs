@@ -8,3 +8,11 @@ pub enum Status {
     Active,
     Inactive,
 }
+
+impl Status {
+    /// Create a [`Status`] fixture for testing.
+    #[cfg(test)]
+    pub fn fixture() -> Self {
+        Self::Inactive
+    }
+}

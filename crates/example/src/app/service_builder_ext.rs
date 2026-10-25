@@ -7,9 +7,9 @@ pub trait ServiceBuilderExt {
     /// Register all application services.
     fn with_app_services(self) -> Self;
 
-    /// Register a mock status provider and all application services.
+    /// Register all application services with stubs for external calls.
     #[cfg(test)]
-    fn with_mock_services(self, status_fn: fn(&Id) -> Result<Status, Report<StatusError>>) -> Self;
+    fn with_test_services(self) -> Self;
 }
 
 impl ServiceBuilderExt for ServiceBuilder {
@@ -23,11 +23,9 @@ impl ServiceBuilderExt for ServiceBuilder {
     }
 
     #[cfg(test)]
-    fn with_mock_services(self, status_fn: fn(&Id) -> Result<Status, Report<StatusError>>) -> Self {
-        let mut status = MockStatusProvider::new();
-        status.expect_get().returning(status_fn);
+    fn with_test_services(self) -> Self {
         self.with_app_services()
-            .with_instance::<Arc<dyn StatusProvider>>(Arc::new(status))
+            .with_trait::<dyn StatusProvider, StatusProviderStub>()
     }
 }
 

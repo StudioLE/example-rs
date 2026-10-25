@@ -33,7 +33,7 @@ Cargo workspace with single crate:
 - `studiole-report` for structured error rendering
 - `usage-rs` (derive) for CLI parsing
 - `thiserror` for error enums
-- `mockall` + `insta` for testing
+- `insta` for testing
 
 > [!NOTE]
 > The template switched from `clap` to `usage-rs`. The last `clap` version is [`345be5a`](https://github.com/StudioLE/example-rs/tree/345be5a89ef4f2cd641082fc3d7570f596e36084).

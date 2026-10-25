@@ -1,5 +1,0 @@
----
-source: crates/example/src/services/status/status_provider.rs
-expression: status
----
-Active

@@ -39,15 +39,13 @@ pub enum StartError {
 mod tests {
     use super::*;
 
-    /// [`StartHandler::execute`] succeeds with mock status.
+    /// [`StartHandler::execute`] with an inactive status.
     #[test]
     fn start_handler_execute() {
         // Arrange
-        let services = ServiceBuilder::new()
-            .with_mock_services(|_| Ok(Status::Inactive))
-            .build();
+        let services = ServiceBuilder::new().with_test_services().build();
         let handler = services.expect::<StartHandler>();
-        let request = StartRequest::mock();
+        let request = StartRequest::fixture();
         // Act
         let output = handler.execute(request);
         // Assert

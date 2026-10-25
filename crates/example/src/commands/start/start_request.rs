@@ -16,9 +16,9 @@ impl StartRequest {
         Self { id }
     }
 
-    /// Create a mock [`StartRequest`] for testing.
+    /// Create a [`StartRequest`] fixture for testing.
     #[cfg(test)]
-    pub fn mock() -> Self {
-        Self::new(Id::mock())
+    pub fn fixture() -> Self {
+        Self::new(Id::fixture())
     }
 }

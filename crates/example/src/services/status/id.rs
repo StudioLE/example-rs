@@ -25,10 +25,10 @@ impl Id {
         self.0
     }
 
-    /// Create a mock [`Id`] for testing.
+    /// Create an [`Id`] fixture for testing.
     #[cfg(test)]
-    pub fn mock() -> Self {
-        Self::new("mock")
+    pub fn fixture() -> Self {
+        Self::new("fixture")
     }
 }
 

@@ -16,9 +16,9 @@ impl StopRequest {
         Self { id }
     }
 
-    /// Create a mock [`StopRequest`] for testing.
+    /// Create a [`StopRequest`] fixture for testing.
     #[cfg(test)]
-    pub fn mock() -> Self {
-        Self::new(Id::mock())
+    pub fn fixture() -> Self {
+        Self::new(Id::fixture())
     }
 }

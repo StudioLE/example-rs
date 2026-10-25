@@ -3,7 +3,6 @@
 use crate::prelude::*;
 
 /// Query the current application status.
-#[cfg_attr(test, mockall::automock)]
 pub trait StatusProvider: Send + Sync {
     /// Get the current status.
     fn get(&self, id: &Id) -> Result<Status, Report<StatusError>>;
@@ -16,6 +15,31 @@ pub struct StatusProviderAdapter;
 impl StatusProvider for StatusProviderAdapter {
     fn get(&self, _id: &Id) -> Result<Status, Report<StatusError>> {
         Ok(Status::Inactive)
+    }
+}
+
+/// [`StatusProvider`] returning a fixed [`Status`].
+#[cfg(test)]
+pub struct StatusProviderStub {
+    /// Status returned by [`StatusProvider::get`].
+    pub status: Status,
+}
+
+#[cfg(test)]
+impl FromServices for StatusProviderStub {
+    type Error = Infallible;
+
+    fn from_services(_services: &ServiceProvider) -> Result<Self, Report<Self::Error>> {
+        Ok(Self {
+            status: Status::fixture(),
+        })
+    }
+}
+
+#[cfg(test)]
+impl StatusProvider for StatusProviderStub {
+    fn get(&self, _id: &Id) -> Result<Status, Report<StatusError>> {
+        Ok(self.status)
     }
 }
 
@@ -37,26 +61,11 @@ mod tests {
     fn status_provider_adapter_get() {
         // Arrange
         let status = StatusProviderAdapter;
-        let id = Id::mock();
+        let id = Id::fixture();
         // Act
         let result = status.get(&id);
         // Assert
         let status = result.expect("should be able to get status");
         assert_eq!(status, Status::Inactive);
-    }
-
-    /// [`MockStatusProvider`] returns the configured value.
-    #[test]
-    fn status_provider_mock_get() {
-        // Arrange
-        let mut status = MockStatusProvider::new();
-        status.expect_get().returning(|_id| Ok(Status::Active));
-        let id = Id::mock();
-        // Act
-        let result = status.get(&id);
-        // Assert
-        let status = result.expect("should be able to get status");
-        assert_eq!(status, Status::Active);
-        assert_yaml_snapshot!(status);
     }
 }

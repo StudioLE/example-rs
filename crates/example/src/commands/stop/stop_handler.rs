@@ -39,15 +39,18 @@ pub enum StopError {
 mod tests {
     use super::*;
 
-    /// [`StopHandler::execute`] succeeds with mock status.
+    /// [`StopHandler::execute`] with an active status.
     #[test]
     fn stop_handler_execute() {
         // Arrange
         let services = ServiceBuilder::new()
-            .with_mock_services(|_| Ok(Status::Active))
+            .with_test_services()
+            .with_instance::<Arc<dyn StatusProvider>>(Arc::new(StatusProviderStub {
+                status: Status::Active,
+            }))
             .build();
         let handler = services.expect::<StopHandler>();
-        let request = StopRequest::mock();
+        let request = StopRequest::fixture();
         // Act
         let output = handler.execute(request);
         // Assert
