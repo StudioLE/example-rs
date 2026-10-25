@@ -101,4 +101,13 @@ mod tests {
         let output = help(spec, &["stop"], Page::Long);
         assert_snapshot!(output);
     }
+
+    /// The usage spec printed by `example __usage_spec__`.
+    ///
+    /// - Replaces the version with a placeholder, as CI sets it at build time
+    #[test]
+    fn cli_args_to_kdl() {
+        let output = CliArgs::to_kdl().replace(env!("CARGO_PKG_VERSION"), "x.y.z");
+        assert_snapshot!(output);
+    }
 }

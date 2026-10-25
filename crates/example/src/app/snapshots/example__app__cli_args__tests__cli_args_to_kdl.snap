@@ -1,0 +1,31 @@
+---
+source: crates/example/src/app/cli_args.rs
+expression: output
+---
+name example
+bin example
+version "x.y.z"
+about "Exemplary template for Rust projects"
+unknown_flags error
+subcommand_required #true
+flag --log-level help="Set the log level." {
+    arg <LOG_LEVEL> {
+        choices ignore_case=#true {
+            choice error help="Errors only."
+            choice warn help="Errors and warnings."
+            choice info help="Errors, warnings, and info."
+            choice debug help="Errors, warnings, info, and debug."
+            choice trace help="Errors, warnings, info, debug, and trace."
+        }
+    }
+}
+flag "-h --help" help="Print help" action=help builtin=#true
+flag "-V --version" help="Print version" action=version builtin=#true
+cmd start help="Start the application." {
+    flag "-h --help" help="Print help" action=help builtin=#true
+    arg <ID> help="Identifier of the resource to start."
+}
+cmd stop help="Stop the application." {
+    flag "-h --help" help="Print help" action=help builtin=#true
+    arg <ID> help="Identifier of the resource to stop."
+}
