@@ -43,8 +43,8 @@ Each pattern has one example, relative to `crates/example/src/`:
 | Render any value as text, JSON, TOML, YAML | `services/output/output_renderer.rs`                   |
 | Pick an option in a test with `CliArgs`    | `services/output/output_renderer.rs`                   |
 | Inject a writer for stdout                 | `services/console/console_writer.rs`                   |
-| Stub with canned answers                   | `services/status/status_provider.rs`                   |
-| Spy that records calls                     | `services/status/status_writer.rs`                     |
+| Stub with canned answers                   | `services/status/status_provider_stub.rs`              |
+| Spy that records calls                     | `services/status/status_writer_spy.rs`                 |
 | Fake with an in-memory store               | `services/status/status_fake.rs`                       |
 | Fixtures and alternate fixtures            | `StatusFake::fixture_active()`                         |
 | Test against a temp dir                    | `services/status/status_file_adapter.rs`               |

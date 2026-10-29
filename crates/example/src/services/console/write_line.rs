@@ -1,4 +1,4 @@
-//! Trait and spy for writing lines.
+//! Trait for writing lines.
 
 use crate::prelude::*;
 
@@ -6,36 +6,6 @@ use crate::prelude::*;
 pub trait WriteLine: Send + Sync {
     /// Write `line` followed by a newline.
     fn write_line(&self, line: &str) -> Result<(), Report<WriteLineError>>;
-}
-
-/// [`WriteLine`] that records each line and always succeeds.
-#[cfg(test)]
-#[derive(FromServices)]
-pub struct WriteLineSpy {
-    #[di(default)]
-    lines: Mutex<Vec<String>>,
-}
-
-#[cfg(test)]
-impl WriteLineSpy {
-    /// Each line passed to [`WriteLine::write_line`], in call order.
-    pub fn lines(&self) -> Vec<String> {
-        self.lines
-            .lock()
-            .expect("should be able to lock lines")
-            .clone()
-    }
-}
-
-#[cfg(test)]
-impl WriteLine for WriteLineSpy {
-    fn write_line(&self, line: &str) -> Result<(), Report<WriteLineError>> {
-        self.lines
-            .lock()
-            .expect("should be able to lock lines")
-            .push(line.to_owned());
-        Ok(())
-    }
 }
 
 /// Errors returned by [`WriteLine`].
