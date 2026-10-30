@@ -11,7 +11,7 @@ jobs:
 
   ci-cd:
     name: CI/CD
-    uses: StudioLE/Actions/.github/workflows/ci-cd-rust.yml@v7
+    uses: StudioLE/Actions/.github/workflows/ci-cd-rust.yml@v8
     with:
       package_name: example
       binary_name: example
