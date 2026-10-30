@@ -13,7 +13,7 @@ Exemplary template for Rust CLI projects.
 Install the latest version with homebrew:
 
 ```shell
-brew install studiole/tap/example-rs
+brew install studiole/tap/example
 ```
 
 Or download the binary from [GitHub Releases](https://github.com/StudioLE/example-rs/releases).
